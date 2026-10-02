@@ -681,7 +681,7 @@
     <!-- LOGIN OVERLAY -->
     <div id="login-overlay">
         <div class="login-card">
-            <img src="1nobg_2.png" alt="B. Loomis Investments LLC">
+            <img src="1nobg.png" alt="B. Loomis Investments LLC">
             <h2>Analysis Department Portal</h2>
             <input type="text" id="login-username" placeholder="Employee Name / ID">
             <input type="password" id="login-password" placeholder="Passcode">
@@ -702,7 +702,7 @@
     <!-- SIDEBAR NAV -->
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <img src="1nobg_2.png" alt="B. Loomis Investments LLC">
+            <img src="1nobg.png" alt="B. Loomis Investments LLC">
         </div>
         <ul class="nav-list">
             <li class="nav-item active" onclick="switchTab('dashboard-tab', this)">
@@ -1347,13 +1347,13 @@
     </div>
 
     <script>
-        // CORE AUDRA USER STATE
+        // CORE AUDRA USER STATE (PERSISTED VIA LOCALSTORAGE)
         let userState = {
             name: "Audra Surles",
             empId: "BLI0842ANS",
             role: "Land Sourcing Associate",
-            passcode: "ASLoomis2026",
-            passwordChanged: false,
+            passcode: localStorage.getItem('audra_portal_passcode') || "ASLoomis2026",
+            passwordChanged: localStorage.getItem('audra_portal_pass_changed') === 'true',
             avatar: "https://via.placeholder.com/150"
         };
 
@@ -1379,7 +1379,10 @@
             const passVal = document.getElementById("login-password").value.trim();
             const errorDiv = document.getElementById("login-error");
 
-            if ((userVal === "audra surles" || userVal === "bli0842ans" || userVal === "") && passVal === userState.passcode) {
+            // Always check live stored passcode
+            const currentPasscode = localStorage.getItem('audra_portal_passcode') || userState.passcode;
+
+            if ((userVal === "audra surles" || userVal === "bli0842ans" || userVal === "") && passVal === currentPasscode) {
                 document.getElementById("login-overlay").style.display = "none";
                 
                 // Trigger 5-second password change prompt if password has not been changed
@@ -1417,7 +1420,6 @@
             if (element) {
                 element.classList.add('active');
             } else {
-                // Find nav item by data match if called programmatically
                 const navItems = document.querySelectorAll('.nav-item');
                 navItems.forEach(item => {
                     const onclickAttr = item.getAttribute('onclick');
@@ -1435,11 +1437,9 @@
             const noResultsNotice = document.getElementById('search-no-results');
 
             if (query === "") {
-                // Reset view back to the active tab prior to searching
                 noResultsNotice.style.display = "none";
                 tabSections.forEach(section => {
                     section.classList.remove('active');
-                    // Reset hidden elements within sections
                     const searchableSubElements = section.querySelectorAll('.feed-post, tr, .checklist-item, .module-card, .data-field, .card');
                     searchableSubElements.forEach(el => el.style.display = "");
                 });
@@ -1458,7 +1458,6 @@
                     section.classList.add('active');
                     matchFoundCount++;
 
-                    // Filter sub-level block elements (posts, table rows, checklist items, cards, modules)
                     const items = section.querySelectorAll('.feed-post, tbody tr, .checklist-item, .module-card, .data-field');
                     if (items.length > 0) {
                         items.forEach(item => {
@@ -1504,7 +1503,6 @@
             });
 
             if (editingNoteId !== null) {
-                // Edit mode: Update existing note
                 savedNotes = savedNotes.map(note => {
                     if (note.id === editingNoteId) {
                         return { ...note, text: text, date: currentTimestamp + ' (Edited)' };
@@ -1513,7 +1511,6 @@
                 });
                 editingNoteId = null;
             } else {
-                // New note creation
                 const newNote = {
                     id: Date.now(),
                     text: text,
@@ -1522,12 +1519,10 @@
                 savedNotes.unshift(newNote);
             }
 
-            // Save to browser storage and render
             localStorage.setItem('portal_saved_notes', JSON.stringify(savedNotes));
             textarea.value = '';
             renderSavedNotes();
 
-            // Auto-switch to the Saved Notes tab section
             switchTab('saved-notes-tab', null);
         }
 
@@ -1660,11 +1655,11 @@
         }
 
         // FULL INTERACTIVE CALENDAR ENGINE
-        let currentCalMonth = 9; // October (0-indexed: 9 = Oct, 10 = Nov, 11 = Dec)
+        let currentCalMonth = 9; // October
         const monthNames = ["OCTOBER 2026", "NOVEMBER 2026", "DECEMBER 2026"];
 
         const calendarEventsData = {
-            9: { // October 2026
+            9: {
                 19: ["TRAINING SHIFT"],
                 20: ["TRAINING SHIFT"],
                 21: ["TRAINING SHIFT"],
@@ -1676,7 +1671,7 @@
                 29: ["Daily TB Meeting"],
                 30: ["Daily TB Meeting", "Submit Hours"]
             },
-            10: { // November 2026
+            10: {
                 2: ["Agile Meeting", "Daily TB Meeting"],
                 3: ["Daily TB Meeting"],
                 4: ["PAY DAY 💳", "Daily TB Meeting"],
@@ -1699,7 +1694,7 @@
                 27: ["COMPANY CLOSED"],
                 30: ["Agile Meeting", "Daily TB Meeting"]
             },
-            11: { // December 2026
+            11: {
                 1: ["Daily TB Meeting"],
                 2: ["PAY DAY 💳", "Daily TB Meeting"],
                 3: ["Monthly Scrum", "Daily TB Meeting"],
@@ -1746,23 +1741,22 @@
                     <tbody>
             `;
 
-            // Helper to generate weeks matrix for Oct, Nov, Dec 2026
             const monthMatrices = {
-                9: [ // Oct 2026 (Mon-Fri dates)
+                9: [
                     [null, null, null, 1, 2],
                     [5, 6, 7, 8, 9],
                     [12, 13, 14, 15, 16],
                     [19, 20, 21, 22, 23],
                     [26, 27, 28, 29, 30]
                 ],
-                10: [ // Nov 2026
+                10: [
                     [2, 3, 4, 5, 6],
                     [9, 10, 11, 12, 13],
                     [16, 17, 18, 19, 20],
                     [23, 24, 25, 26, 27],
                     [30, null, null, null, null]
                 ],
-                11: [ // Dec 2026
+                11: [
                     [null, 1, 2, 3, 4],
                     [7, 8, 9, 10, 11],
                     [14, 15, 16, 17, 18],
@@ -1819,7 +1813,7 @@
             }
         }
 
-        // USER PROFILE & PASSWORD UPDATES
+        // USER PROFILE & PASSWORD UPDATES (SAVED TO LOCALSTORAGE)
         function handleAvatarUpload(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -1840,11 +1834,16 @@
         function updatePassword() {
             const oldP = document.getElementById("settings-old-pass").value;
             const newP = document.getElementById("settings-new-pass").value;
+            const currentPasscode = localStorage.getItem('audra_portal_passcode') || userState.passcode;
 
-            if (oldP === userState.passcode && newP) {
+            if (oldP === currentPasscode && newP) {
+                // Permanently store passcode across reloads & browser restarts
                 userState.passcode = newP;
                 userState.passwordChanged = true;
-                alert("Security passcode updated successfully! The password reminder prompt will no longer appear.");
+                localStorage.setItem('audra_portal_passcode', newP);
+                localStorage.setItem('audra_portal_pass_changed', 'true');
+
+                alert("Security passcode updated successfully! Your browser will now remember this password even after restarting.");
                 document.getElementById("settings-old-pass").value = "";
                 document.getElementById("settings-new-pass").value = "";
             } else {
