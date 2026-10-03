@@ -702,7 +702,7 @@
     <!-- SIDEBAR NAV -->
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <img src="../1nobg.png" alt="B. Loomis Investments LLC">
+            <img src="1nobg.png" alt="B. Loomis Investments LLC">
         </div>
         <ul class="nav-list">
             <li class="nav-item active" onclick="switchTab('dashboard-tab', this)">
@@ -900,20 +900,20 @@
                     <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Progressive delivery tracker for your remote setup hardware package.</p>
 
                     <div class="timeline-container">
-                        <div class="timeline-progress-bar" id="equip-progress-bar" style="width: 75%;"></div>
-                        <div class="timeline-step active">
+                        <div class="timeline-progress-bar" id="equip-progress-bar" style="width: 0%;"></div>
+                        <div class="timeline-step">
                             <div class="step-node">1</div>
                             <div class="step-label">Ordered</div>
                         </div>
-                        <div class="timeline-step active">
+                        <div class="timeline-step">
                             <div class="step-node">2</div>
                             <div class="step-label">Processing</div>
                         </div>
-                        <div class="timeline-step active">
+                        <div class="timeline-step">
                             <div class="step-node">3</div>
                             <div class="step-label">Confirmation #</div>
                         </div>
-                        <div class="timeline-step active" id="node-tracking">
+                        <div class="timeline-step" id="node-tracking">
                             <div class="step-node">4</div>
                             <div class="step-label">Tracking Details</div>
                         </div>
@@ -926,11 +926,11 @@
                     <!-- LIVE TRACKING BOX -->
                     <div style="background: #fafafa; border: 1px solid #e0e0e0; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
                         <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">
-                            <strong>Carrier: FedEx Express</strong>
-                            <span style="color: var(--primary-green); font-weight: bold;">Tracking #: 784291048291</span>
+                            <strong>Carrier: Pending Order</strong>
+                            <span style="color: var(--text-muted); font-weight: bold;">Tracking #: Pending</span>
                         </div>
                         <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;" id="live-tracking-status">
-                            📍 <strong>Status:</strong> Package in transit. Arrived at FedEx Sort Facility (Fayetteville, NC). Estimated Delivery: Oct 8, 2026.
+                            📦 <strong>Status:</strong> Equipment order pending initiation. Tracking details will be updated here as soon as shipment processing begins.
                         </div>
                     </div>
 
@@ -969,6 +969,7 @@
                     </div>
                 </div>
             </section>
+
 
             <!-- 4. IMPORTANT PAPERWORK SECTION -->
             <section id="paperwork-tab" class="tab-section">
